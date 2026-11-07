@@ -2,7 +2,7 @@ const express = require('express');
 const { Client, GatewayIntentBits, Events } = require('discord.js');
 
 const TOKEN = process.env.DISCORD_TOKEN;
-const ERLAUBT = (process.env.ERLAUBT_IDS || '')
+const WHITELISTED_USERIDS = (process.env.WHITELISTED_USERIDS || '')
   .split(',')
   .map((s) => s.trim())
   .filter(Boolean);
@@ -34,7 +34,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
   if (interaction.commandName === 'ping') {
-    if (!ERLAUBT.includes(interaction.user.id)) {
+    if (!WHITELISTED_USERIDS.includes(interaction.user.id)) {
       return interaction.reply({
         content: "⛔ You don't have the permission to use the command!",
         flags: 64, // nur für den Nutzer sichtbar
